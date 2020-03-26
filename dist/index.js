@@ -53,26 +53,29 @@ module.exports = require("os");
 /***/ 104:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
-const core = __webpack_require__(470);
-const child = __webpack_require__(129);
+const { setFailed, getInput } = __webpack_require__(470);
+const { execSync } = __webpack_require__(129);
 
 function main() {
-  const testCommand = core.getInput("command");
+  const testCommand = getInput("command");
 
-  child.execSync(testCommand);
-  const coveragePercentage = child
-    .execSync("npx coverage-percentage ./coverage/lcov.info --lcov")
-    .toString();
+  console.log(`Executing command: ${testCommand}`);
+  execSync(testCommand).toString();
+
+  console.log("Calculating coverage");
+  const coveragePercentage = execSync(
+    "npx coverage-percentage ./coverage/lcov.info --lcov"
+  ).toString();
 
   if (parseFloat(coveragePercentage) < 80) {
-    core.setFailed("Not enough coverage");
+    setFailed("Not enough coverage");
   }
 }
 
 try {
   main();
 } catch (error) {
-  core.setFailed(error.message);
+  setFailed(error.message);
 }
 
 

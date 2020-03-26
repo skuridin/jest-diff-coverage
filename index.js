@@ -1,21 +1,24 @@
-const core = require("@actions/core");
-const child = require("child_process");
+const { setFailed, getInput } = require("@actions/core");
+const { execSync } = require("child_process");
 
 function main() {
-  const testCommand = core.getInput("command");
+  const testCommand = getInput("command");
 
-  child.execSync(testCommand);
-  const coveragePercentage = child
-    .execSync("npx coverage-percentage ./coverage/lcov.info --lcov")
-    .toString();
+  console.log(`Executing command: ${testCommand}`);
+  execSync(testCommand).toString();
+
+  console.log("Calculating coverage");
+  const coveragePercentage = execSync(
+    "npx coverage-percentage ./coverage/lcov.info --lcov"
+  ).toString();
 
   if (parseFloat(coveragePercentage) < 80) {
-    core.setFailed("Not enough coverage");
+    setFailed("Not enough coverage");
   }
 }
 
 try {
   main();
 } catch (error) {
-  core.setFailed(error.message);
+  setFailed(error.message);
 }
