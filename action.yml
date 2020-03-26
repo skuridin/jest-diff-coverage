@@ -1,0 +1,10 @@
+name: 'Jest Diff Coverage'
+description: 'Fails if coverage is lower than expected'
+inputs:
+  command:
+    description: 'Command to execute'
+    required: false
+    default: 'npx jest'
+runs:
+  using: 'node12'
+  main: 'index.js'
