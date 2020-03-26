@@ -1,4 +1,4 @@
-const core = require("@actions/code");
+const core = require("@actions/core");
 const child = require("child_process");
 
 function main() {
