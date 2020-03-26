@@ -5,7 +5,7 @@ function main() {
   const testCommand = getInput("command");
 
   console.log(`Executing command: ${testCommand}`);
-  execSync(testCommand).toString();
+  execSync(testCommand, { stdio: "inherit" });
 
   console.log("Calculating coverage");
   const coveragePercentage = execSync(
